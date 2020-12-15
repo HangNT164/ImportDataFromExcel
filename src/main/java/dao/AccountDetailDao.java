@@ -2,43 +2,41 @@ package dao;
 
 import entity.AccountDetail;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Time;
 
 public class AccountDetailDao {
-    public int add(Connection con, AccountDetail student) {
-        String query = "INSERT INTO \"TIMEKEEPING\".account_detail (name,department,position,start_time,end_time,note,is_email,work_date)\n" +
-                "values(?,?,?,?,?,?,?,?)";
-        try (PreparedStatement ps = (con != null) ? con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS) : null;) {
+    public boolean add(Connection con, AccountDetail accountDetail) {
+        int isCheck = 0;
+        String query = "INSERT INTO \"TIME_KEEPING\".account_detail (name,department,position,start_time,end_time,note,is_email,work_date,account_id)\n" +
+                "values(?,?,?,?,?,?,?,?,?)";
+        try (PreparedStatement ps = (con != null) ? con.prepareStatement(query) : null;) {
 
-            ps.setObject(1, student.getName());
-            ps.setObject(2, student.getDepartment());
-            ps.setObject(3, student.getPosition());
+            ps.setObject(1, accountDetail.getName());
+            ps.setObject(2, accountDetail.getDepartment());
+            ps.setObject(3, accountDetail.getPosition());
 
-            if (student.getStartTime() != null) {
-                ps.setObject(4, new Time(student.getStartTime().getTime()));
+            if (accountDetail.getStartTime() != null) {
+                ps.setObject(4, new Time(accountDetail.getStartTime().getTime()));
             } else {
                 ps.setObject(4, null);
             }
-            if (student.getEndTime() != null) {
-                ps.setObject(5, new Time(student.getEndTime().getTime()));
+            if (accountDetail.getEndTime() != null) {
+                ps.setObject(5, new Time(accountDetail.getEndTime().getTime()));
             } else {
                 ps.setObject(5, null);
             }
 
-            ps.setObject(6, student.getNote());
-            ps.setObject(7, student.getCheckEmail());
-            ps.setDate(8, new java.sql.Date(student.getWorkDate().getTime()));
+            ps.setObject(6, accountDetail.getNote());
+            ps.setObject(7, accountDetail.getCheckEmail());
+            ps.setDate(8, new java.sql.Date(accountDetail.getWorkDate().getTime()));
+            ps.setObject(9, accountDetail.getAccountID());
 
-            int isCheck = ps.executeUpdate();
-            if (isCheck > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
-                rs.next();
-                return rs.getInt(1);
-            }
-
+            isCheck = ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
-        return 0;
+        return isCheck > 0;
     }
 }

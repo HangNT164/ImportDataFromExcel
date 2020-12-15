@@ -12,7 +12,6 @@ import lombok.ToString;
 public class Account {
     private int id;
     private int roleID;
-    private int accountDetailID;
     private  String username;
     private String password;
 }

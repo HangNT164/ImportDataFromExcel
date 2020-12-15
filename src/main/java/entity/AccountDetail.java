@@ -13,13 +13,13 @@ import java.util.Date;
 @ToString
 public class AccountDetail {
     private int id;
-    private int accountID;
+    private String username;
     private String name;
     private String department;
     private String position;
+    private Date workDate;
     private Date startTime;
     private Date endTime;
     private String note;
     private int checkEmail;
-    private Date workDate;
 }

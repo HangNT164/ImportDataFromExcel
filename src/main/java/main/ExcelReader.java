@@ -18,12 +18,12 @@ import java.util.Date;
 import java.util.Iterator;
 
 public class ExcelReader {
-    public static final String SAMPLE_XLSX_FILE_PATH = "E:\\2HocTap\\2.Assignment\\Timekeeping\\a.xlsx";
+    public static final String SAMPLE_XLSX_FILE_PATH = "E:\\2.HocTap\\2.Assignment\\Timekeeping\\a.xlsx";
 
     public static void main(String[] args) throws SQLException {
         Connection connection = null;
-        AccountDetail accountDetail = null;
-        Account account = null;
+        AccountDetail accountDetail;
+        Account account;
 
         try {
             FileInputStream inputStream = new FileInputStream(SAMPLE_XLSX_FILE_PATH);
@@ -121,11 +121,11 @@ public class ExcelReader {
 
                 // add account
                 account.setRoleID(1);
-                account.setPassword("123456");
-                int accountID = new AccountDao().add(connection, account);
+                account.setPassword("");
+                new AccountDao().add(connection, account);
 
-                accountDetail.setAccountID(accountID);
                 // add accountDetail
+                accountDetail.setUsername(account.getUsername());
                 new AccountDetailDao().add(connection, accountDetail);
             }
 
